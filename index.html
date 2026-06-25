@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ============================================================= -->
+    <!--  Metadatos básicos                                            -->
+    <!-- ============================================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taberna La Brasa Secreta – Carta Digital QR</title>
+
+    <!-- ============================================================= -->
+    <!--  Fuentes de Google Fonts                                      -->
+    <!-- ============================================================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- ============================================================= -->
+    <!--  Estilos internos – sin frameworks ni pre‑procesadores        -->
+    <!-- ============================================================= -->
+    <style>
+        /* ---------------------------------------------------------- */
+        /*  Paleta de colores (2‑3 tonos)                              */
+        /* ---------------------------------------------------------- */
+        :root {
+            --color-dark   : #0d1b2a;   /* azul noche profundo */
+            --color-mid    : #1b263b;   /* azul medio */
+            --color-accent : #e0a96d;   /* ámbar cálido */
+            --color-light  : #f5f5f5;   /* gris muy claro */
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Reset y tipografía                                         */
+        /* ---------------------------------------------------------- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-dark);
+            color: var(--color-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', serif;
+            margin-bottom: .5rem;
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Navbar fija con blur                                       */
+        /* ---------------------------------------------------------- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(13,27,42,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.5rem;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--color-accent);
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .navbar .nav-links a {
+            color: var(--color-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color .3s;
+        }
+
+        .navbar .nav-links a:hover {
+            color: var(--color-accent);
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Hero – ocupa al menos 80 % de la altura de la pantalla     */
+        /* ---------------------------------------------------------- */
+        .hero {
+            min-height: 80vh;
+            background: linear-gradient(135deg,
+                        var(--color-dark) 0%,
+                        var(--color-mid) 60%,
+                        var(--color-accent) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><circle cx=%22100%22 cy=%22100%22 r=%2275%22 fill=%22%23e0a96d%22 opacity=%220.15%22/></svg>') center/cover;
+            opacity: 0.2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--color-accent), #ffcc80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--color-light);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .hero .cta-btn {
+            background: var(--color-accent);
+            color: #0d1b2a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .hero .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(224,169,109,0.4);
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Sección de pestañas (tabs)                                 */
+        /* ---------------------------------------------------------- */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .tab-btn {
+            background: var(--color-mid);
+            color: var(--color-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .3s, color .3s;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: var(--color-accent);
+            color: #0d1b2a;
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Tarjetas de menú (servicios)                               */
+        /* ---------------------------------------------------------- */
+        .menu-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            padding: 0 1rem;
+        }
+
+        .menu-card {
+            background: var(--color-mid);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            border: 2px solid transparent;
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+            border-color: var(--color-accent);
+        }
+
+        .menu-card .icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .menu-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-light);
+        }
+
+        .menu-card p {
+            flex-grow: 1;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .menu-card .price {
+            font-family: 'Montserrat', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-top: 0.75rem;
+            text-align: right;
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Sección de estadísticas (contadores)                      */
+        /* ---------------------------------------------------------- */
+        .stats {
+            background: var(--color-dark);
+            color: var(--color-light);
+            padding: 3rem 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--color-accent);
+        }
+
+        .stat-item .label {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Footer completo                                            */
+        /* ---------------------------------------------------------- */
+        .footer {
+            background: var(--color-mid);
+            color: var(--color-light);
+            padding: 2rem 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .footer .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer a {
+            color: var(--color-light);
+            text-decoration: underline;
+        }
+
+        .footer a:hover {
+            color: var(--color-accent);
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Botón flotante de WhatsApp                                 */
+        /* ---------------------------------------------------------- */
+        .whatsapp-float {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            background: #25D366;
+            color: #0d1b2a;
+            border-radius: 9999px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+            z-index: 1000;
+        }
+
+        .whatsapp-float:hover {
+            background: #20ba5a;
+        }
+
+        .whatsapp-float svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            fill: currentColor;
+        }
+
+        @keyframes pulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.07); }
+            100% { transform: scale(1); }
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Animaciones de aparición al hacer scroll                    */
+        /* ---------------------------------------------------------- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .6s ease-out, transform .6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---------------------------------------------------------- */
+        /*  Media queries – mobile first                               */
+        /* ---------------------------------------------------------- */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .navbar .nav-links {
+                display: none;
+            }
+            .navbar .menu-toggle {
+                display: block;
+                cursor: pointer;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================= -->
+    <!--  Navbar – logo a la izquierda, enlaces a la derecha           -->
+    <!-- ============================================================= -->
+    <header class="navbar">
+        <div class="logo">La Brasa Secreta</div>
+        <nav class="nav-links">
+            <a href="#menu">Carta</a>
+            <a href="#stats">Estadísticas</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+        <!-- Menú hamburguesa para móvil (JS simple) -->
+        <div class="menu-toggle" style="display:none;">☰</div>
+    </header>
+
+    <!-- ============================================================= -->
+    <!--  HERO – gran impacto visual                                   -->
+    <!-- ============================================================= -->
+    <section class="hero">
+        <h1>Bienvenido a La Brasa Secreta</h1>
+        <p>Descubre los sabores auténticos de la brasa y el mar de Cádiz, directamente en tu mesa mediante este QR.</p>
+        <a href="#menu" class="cta-btn">Explorar la Carta</a>
+    </section>
+
+    <!-- ============================================================= -->
+    <!--  Pestañas de categorías                                        -->
+    <!-- ============================================================= -->
+    <section id="menu" class="fade-in">
+        <div class="tabs">
+            <button class="tab-btn active" data-target="todos">Todos</button>
+            <button class="tab-btn" data-target="entrantes">Entrantes</button>
+            <button class="tab-btn" data-target="brasa">A la Brasa</button>
+            <button class="tab-btn" data-target="postres">Postres</button>
+        </div>
+
+        <!-- ---------------------------------------------------------- -->
+        <!--  Grid de tarjetas – cada una representa un plato           -->
+        <!-- ---------------------------------------------------------- -->
+        <div class="menu-grid">
+
+            <!-- Entrante -->
+            <article class="menu-card fade-in" data-category="entrantes">
+                <div class="icon">🥘</div>
+                <h3>Croquetas Caseras de Rabo de Toro</h3>
+                <p>Suave masa crujiente con interior cremoso y toque de pimentón ahumado.</p>
+                <div class="price">12,50 €</div>
+            </article>
+
+            <!-- Brasa – Atún -->
+            <article class="menu-card fade-in" data-category="brasa">
+                <div class="icon">🐟</div>
+                <h3>Atún Rojo de Almadraba</h3>
+                <p>Sellado a fuego vivo, acompañado de emulsión de soja y sésamo tostado.</p>
+                <div class="price">24,00 €</div>
+            </article>
+
+            <!-- Brasa – Secreto -->
+            <article class="menu-card fade-in" data-category="brasa">
+                <div class="icon">🥩</div>
+                <h3>Secreto Ibérico al Carbón</h3>
+                <p>Reducción melosa de Pedro Ximénez y toque de romero fresco.</p>
+                <div class="price">18,50 €</div>
+            </article>
+
+            <!-- Postre -->
+            <article class="menu-card fade-in" data-category="postres">
+                <div class="icon">🍰</div>
+                <h3>Tarta de Queso Fluida</h3>
+                <p>Elaborada con queso Payoyo, base de galleta crujiente y coulis de frutos rojos.</p>
+                <div class="price">6,50 €</div>
+            </article>
+
+            <!-- Entrante – Ensalada -->
+            <article class="menu-card fade-in" data-category="entrantes">
+                <div class="icon">🥗</div>
+                <h3>Ensalada de Pimientos Asados</h3>
+                <p>Pimientos del piquillo, aceitunas negras, y aliño de ajo y perejil.</p>
+                <div class="price">9,00 €</div>
+            </article>
+
+            <!-- Postre – Helado -->
+            <article class="menu-card fade-in" data-category="postres">
+                <div class="icon">🍨</div>
+                <h3>Helado Artesanal de Menta</h3>
+                <p>Con trocitos de chocolate negro y hoja de menta fresca.</p>
+                <div class="price">5,00 €</div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!--  Sección de estadísticas – contadores animados                -->
+    <!-- ============================================================= -->
+    <section id="stats" class="stats fade-in">
+        <div class="stat-item">
+            <div class="number" data-count="12">0</div>
+            <div class="label">Años de experiencia</div>
+        </div>
+        <div class="stat-item">
+            <div class="number" data-count="250">0</div>
+            <div class="label">Clientes satisfechos</div>
+        </div>
+        <div class="stat-item">
+            <div class="number" data-count="150">0</div>
+            <div class="label">Platos diferentes</div>
+        </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!--  Footer completo                                              -->
+    <!-- ============================================================= -->
+    <footer id="contacto" class="footer">
+        <div class="logo">La Brasa Secreta</div>
+        <p>Dirección: <strong>La Línea de la Concepción, Cádiz</strong></p>
+        <p>Teléfono: <a href="tel:[TU WHATSAPP]">[TU WHATSAPP]</a> | Email: <a href="mailto:[TU EMAIL]">[TU EMAIL]</a></p>
+        <p>© 2026 La Brasa Secreta – Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- ============================================================= -->
+    <!--  Botón flotante de WhatsApp                                   -->
+    <!-- ============================================================= -->
+    <a href="https://wa.me/[TU WHATSAPP]?text=Hola%20quiero%20consultar%20la%20carta%20digital" class="whatsapp-float" target="_blank">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.4.011 12.017.011c3.205.001 6.22 1.249 8.49 3.52 2.27 2.27 3.514 5.287 3.511 8.491-.003 6.66-5.343 11.997-11.963 11.997-2.005-.001-3.973-.5-5.713-1.448L0 24zm6.59-4.846c1.657.982 3.411 1.5 5.364 1.501 5.496 0 9.97-4.474 9.973-9.976.002-2.665-1.033-5.171-2.913-7.051C17.19 1.748 14.687.712 12.028.712c-5.502 0-9.979 4.474-9.982 9.976-.001 1.905.498 3.766 1.448 5.394l-.999 3.648 3.733-.979z"/>
+        </svg>
+        <span>WhatsApp</span>
+    </a>
+
+    <!-- ============================================================= -->
+    <!--  Scripts – lógica de pestañas, contadores y scroll            -->
+    <!-- ============================================================= -->
+    <script>
+        /* ---------------------------------------------------------- */
+        /*  Función de cambio de categoría (tabs)                     */
+        /* ---------------------------------------------------------- */
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const menuCards   = document.querySelectorAll('.menu-card');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 1. Gestionar estado activo del botón
+                tabButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 2. Mostrar/ocultar tarjetas según data-target
+                const target = btn.getAttribute('data-target');
+                menuCards.forEach(card => {
+                    if (target === 'todos' || card.dataset.category === target) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        /* ---------------------------------------------------------- */
+        /*  Contadores animados – IntersectionObserver                 */
+        /* ---------------------------------------------------------- */
+        const counters = document.querySelectorAll('.number');
+
+        const animateCount = (el, target) => {
+            let start = 0;
+            const duration = 2000;
+            const stepTime = Math.abs(Math.floor(duration / target));
+            const timer = setInterval(() => {
+                start += 1;
+                el.textContent = start;
+                if (start >= target) clearInterval(timer);
+            }, stepTime);
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = +el.getAttribute('data-count');
+                    animateCount(el, target);
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.6 });
+
+        counters.forEach(counter => observer.observe(counter));
+
+        /* ---------------------------------------------------------- */
+        /*  Fade‑in al hacer scroll – usa la clase .fade-in           */
+        /* ---------------------------------------------------------- */
+        const faders = document.querySelectorAll('.fade-in');
+
+        const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        faders.forEach(fader => appearOnScroll.observe(fader));
+
+        /* ---------------------------------------------------------- */
+        /*  Menú hamburguesa para móvil (muy simple)                 */
+        /* ---------------------------------------------------------- */
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks   = document.querySelector('.nav-links');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            });
+        }
+    </script>
+</body>
+</html>
